@@ -1,0 +1,25 @@
+version: "3.8"
+   
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=sentimeteruser
+      - POSTGRES_PASSWORD=sentimeterpassword
+      - POSTGRES_DB=sentimeterdb
+      - DOCKER=True
+      - DB_USER=sentimeteruser
+      - DB_PASSWORD=sentimeterpassword
+      - DB_DATABASE=sentimeterdb
+
+  web:
+    build: ./sentimeter
+    command: python manage.py runserver 0.0.0.0:8080
+    volumes:
+      - ./sentimeter/:/code/
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
